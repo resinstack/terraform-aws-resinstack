@@ -17,11 +17,7 @@ resource "aws_launch_template" "controller" {
     }
   }
 
-  vpc_security_group_ids = [
-    var.common_sg,
-    aws_security_group.consul_gossip.id,
-    aws_security_group.consul_server.id,
-  ]
+  vpc_security_group_ids = var.security_groups
 
   image_id = var.ami
   key_name = var.key_name
