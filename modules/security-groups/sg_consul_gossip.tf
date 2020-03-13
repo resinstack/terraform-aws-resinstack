@@ -1,5 +1,5 @@
 resource "aws_security_group" "consul_gossip" {
-  name        = "consul-gossip"
+  name        = "resinstack-consul-gossip"
   description = "Permit consul gossip traffic."
   vpc_id      = var.vpc_id
 }

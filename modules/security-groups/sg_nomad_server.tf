@@ -1,5 +1,5 @@
 resource "aws_security_group" "nomad_server" {
-  name        = "nomad-server"
+  name        = "resinstack-nomad-server"
   description = "Nomad Server traffic"
   vpc_id      = var.vpc_id
 }

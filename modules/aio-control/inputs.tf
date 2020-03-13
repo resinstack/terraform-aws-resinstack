@@ -41,6 +41,11 @@ variable "key_name" {
 }
 
 variable "security_groups" {
-  type = list(string)
+  type        = list(string)
   description = "List of security groups to apply to machines."
+}
+
+variable "direct_access_security_group" {
+  type        = string
+  description = "Group with direct access to the control ALB"
 }

@@ -1,5 +1,5 @@
 resource "aws_security_group" "consul_server" {
-  name        = "consul-server"
+  name        = "resinstack-consul-server"
   description = "Server RPC Group"
   vpc_id      = var.vpc_id
 }
