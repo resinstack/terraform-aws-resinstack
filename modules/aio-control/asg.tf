@@ -17,10 +17,7 @@ resource "aws_launch_template" "controller" {
     }
   }
 
-  vpc_security_group_ids = flatten([
-    var.security_groups,
-    aws_security_group.aio_internal.id,
-  ])
+  vpc_security_group_ids = var.security_groups
 
   image_id = var.ami
   key_name = var.key_name
@@ -58,9 +55,9 @@ resource "aws_autoscaling_group" "controller" {
 
   placement_group = aws_placement_group.controller.id
   target_group_arns = [
-    aws_lb_target_group.nomad.arn,
-    aws_lb_target_group.consul.arn,
-    aws_lb_target_group.vault.arn,
+    var.control_alb_nomad,
+    var.control_alb_consul,
+    var.control_alb_vault,
   ]
 
   vpc_zone_identifier = var.vpc_subnets

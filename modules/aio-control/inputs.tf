@@ -45,7 +45,17 @@ variable "security_groups" {
   description = "List of security groups to apply to machines."
 }
 
-variable "direct_access_security_group" {
+variable "control_alb_nomad" {
   type        = string
-  description = "Group with direct access to the control ALB"
+  description = "ARN of the nomad target group."
+}
+
+variable "control_alb_consul" {
+  type        = string
+  description = "ARN of the consul target group."
+}
+
+variable "control_alb_vault" {
+  type        = string
+  description = "ARN of the vault target group."
 }

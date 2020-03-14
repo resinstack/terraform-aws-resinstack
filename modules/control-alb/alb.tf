@@ -3,10 +3,8 @@ resource "aws_lb" "alb" {
   internal           = true
   load_balancer_type = "application"
 
-  security_groups = flatten([
-    aws_security_group.aio_alb_internal.id,
-  ])
-  subnets = var.vpc_subnets
+  security_groups = [aws_security_group.alb.id]
+  subnets         = var.vpc_subnets
 }
 
 resource "aws_lb_listener" "nomad" {
@@ -21,7 +19,7 @@ resource "aws_lb_listener" "nomad" {
 }
 
 resource "aws_lb_target_group" "nomad" {
-  name     = "resinstack-aio-nomad"
+  name     = "resinstack-nomad"
   port     = 4646
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -47,7 +45,7 @@ resource "aws_lb_listener" "consul" {
 }
 
 resource "aws_lb_target_group" "consul" {
-  name     = "resinstack-aio-consul"
+  name     = "resinstack-consul"
   port     = 8500
   protocol = "HTTP"
   vpc_id   = var.vpc_id
@@ -73,7 +71,7 @@ resource "aws_lb_listener" "vault" {
 }
 
 resource "aws_lb_target_group" "vault" {
-  name     = "resinstack-aio-vault"
+  name     = "resinstack-vault"
   port     = 8200
   protocol = "HTTP"
   vpc_id   = var.vpc_id

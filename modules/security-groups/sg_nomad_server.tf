@@ -63,3 +63,15 @@ resource "aws_security_group_rule" "nomad_serf_udp_egress" {
   security_group_id        = aws_security_group.nomad_server.id
   source_security_group_id = aws_security_group.nomad_server.id
 }
+
+resource "aws_security_group_rule" "nomad_api_client" {
+  for_each = toset(var.nomad_api_client_sgs)
+
+  description              = "Accept API traffic from additional sources"
+  type                     = "ingress"
+  from_port                = 4646
+  to_port                  = 4646
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.nomad_server.id
+  source_security_group_id = each.value
+}

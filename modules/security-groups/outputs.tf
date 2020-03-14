@@ -12,3 +12,8 @@ output "nomad_server_id" {
   value       = aws_security_group.nomad_server.id
   description = "Group for nomad server members"
 }
+
+output "vault_server_id" {
+  value       = aws_security_group.vault_server.id
+  description = "Group for nomad server members"
+}
