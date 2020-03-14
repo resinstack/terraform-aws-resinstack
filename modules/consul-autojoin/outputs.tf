@@ -1,6 +1,6 @@
-output "role_arn" {
-  value       = aws_iam_role.consul_autojoin.arn
-  description = "ARN of the role which can perform autojoin introspection."
+output "policy_arn" {
+  value       = aws_iam_policy.cloud_autojoin.arn
+  description = "ARN of the policy permitting cloud autojoin"
 }
 
 output "profile_name" {

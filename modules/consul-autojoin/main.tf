@@ -11,8 +11,7 @@ data "aws_iam_policy_document" "autojoin_instance_role" {
 }
 
 resource "aws_iam_role" "consul_autojoin" {
-  name = var.instance_role_name
-
+  name               = "ResinStackConsulAutojoin"
   assume_role_policy = data.aws_iam_policy_document.autojoin_instance_role.json
 }
 
@@ -29,7 +28,7 @@ resource "aws_iam_policy" "cloud_autojoin" {
   policy = data.aws_iam_policy_document.cloud_autojoin.json
 }
 
-resource "aws_iam_role_policy_attachment" "test-attach" {
+resource "aws_iam_role_policy_attachment" "cloud_autojoin" {
   role       = aws_iam_role.consul_autojoin.name
   policy_arn = aws_iam_policy.cloud_autojoin.arn
 }
