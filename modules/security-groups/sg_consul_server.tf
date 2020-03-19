@@ -35,3 +35,13 @@ resource "aws_security_group_rule" "consul_api_client" {
   security_group_id        = aws_security_group.consul_server.id
   source_security_group_id = each.value
 }
+
+resource "aws_security_group_rule" "consul_from_cluster_worker" {
+  description              = "Accept RPC from cluster workers"
+  type                     = "ingress"
+  from_port                = 8300
+  to_port                  = 8300
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.consul_server.id
+  source_security_group_id = aws_security_group.cluster_worker.id
+}

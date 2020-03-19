@@ -75,3 +75,13 @@ resource "aws_security_group_rule" "nomad_api_client" {
   security_group_id        = aws_security_group.nomad_server.id
   source_security_group_id = each.value
 }
+
+resource "aws_security_group_rule" "nomad_from_cluster_worker" {
+  description              = "Accept API traffic from cluster workers"
+  type                     = "ingress"
+  from_port                = 4647
+  to_port                  = 4647
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.nomad_server.id
+  source_security_group_id = aws_security_group.cluster_worker.id
+}

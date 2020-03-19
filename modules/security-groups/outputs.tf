@@ -17,3 +17,8 @@ output "vault_server_id" {
   value       = aws_security_group.vault_server.id
   description = "Group for nomad server members"
 }
+
+output "cluster_worker_id" {
+  value       = aws_security_group.cluster_worker.id
+  description = "Group for nomad cluster worker with access to cluster resources."
+}
