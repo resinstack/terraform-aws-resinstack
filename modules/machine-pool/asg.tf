@@ -1,5 +1,5 @@
-resource "aws_launch_template" "controller" {
-  name = "aio-controller"
+resource "aws_launch_template" "pool" {
+  name = var.pool_name
 
   block_device_mappings {
     device_name = "/dev/xvda"
@@ -41,29 +41,26 @@ resource "aws_launch_template" "controller" {
   }
 }
 
-resource "aws_placement_group" "controller" {
-  name = "aio-controller"
+resource "aws_placement_group" "pool" {
+  name = var.pool_name
 
   # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html
   strategy = "partition"
 }
 
-resource "aws_autoscaling_group" "controller" {
-  name     = "aio-controller"
-  min_size = var.machine_count
-  max_size = var.machine_count
+resource "aws_autoscaling_group" "pool" {
+  name     = var.pool_name
+  min_size = var.machine_count_min
+  max_size = var.machine_count_max
 
-  placement_group = aws_placement_group.controller.id
-  target_group_arns = [
-    var.control_alb_nomad,
-    var.control_alb_consul,
-    var.control_alb_vault,
-  ]
+  desired_capacity = var.machine_count_desired
 
+  placement_group     = aws_placement_group.pool.id
+  target_group_arns   = var.lb_target_groups
   vpc_zone_identifier = var.vpc_subnets
 
   launch_template {
-    id      = aws_launch_template.controller.id
+    id      = aws_launch_template.pool.id
     version = "$Latest"
   }
 }
