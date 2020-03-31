@@ -60,3 +60,14 @@ variable "lb_target_groups" {
   description = "List of target group ARNs for this machine pool."
   default     = []
 }
+
+variable "termination_policies" {
+  type        = list(string)
+  description = "List of termination policies.  The default is optimized for updating machines via replacement."
+  default = [
+    "OldestLaunchTemplate",
+    "AllocationStrategy",
+    "ClosestToNextInstanceHour",
+    "OldestInstance",
+  ]
+}

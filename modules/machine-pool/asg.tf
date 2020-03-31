@@ -53,7 +53,8 @@ resource "aws_autoscaling_group" "pool" {
   min_size = var.machine_count_min
   max_size = var.machine_count_max
 
-  desired_capacity = var.machine_count_desired
+  desired_capacity     = var.machine_count_desired
+  termination_policies = var.termination_policies
 
   placement_group     = aws_placement_group.pool.id
   target_group_arns   = var.lb_target_groups
