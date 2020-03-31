@@ -30,3 +30,9 @@ variable "vault_target_sgs" {
   description = "List of security groups that contain vault targets"
   default     = []
 }
+
+variable "deregistration_delay" {
+  type        = number
+  description = "Number of seconds to wait before allowing a machine to detach from the target group."
+  default     = 300
+}

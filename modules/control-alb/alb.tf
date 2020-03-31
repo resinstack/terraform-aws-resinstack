@@ -31,6 +31,8 @@ resource "aws_lb_target_group" "nomad" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
   }
+
+  deregistration_delay = var.deregistration_delay
 }
 
 resource "aws_lb_listener" "consul" {
@@ -57,6 +59,8 @@ resource "aws_lb_target_group" "consul" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
   }
+
+  deregistration_delay = var.deregistration_delay
 }
 
 resource "aws_lb_listener" "vault" {
@@ -84,4 +88,6 @@ resource "aws_lb_target_group" "vault" {
     unhealthy_threshold = 2
     matcher             = "200,429"
   }
+
+  deregistration_delay = var.deregistration_delay
 }
