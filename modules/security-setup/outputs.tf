@@ -1,5 +1,5 @@
 output "vault_key_id" {
-  value = aws_kms_key.vault_key.id
+  value       = aws_kms_key.vault_key.id
   description = "ID of the Vault KMS key"
 }
 
