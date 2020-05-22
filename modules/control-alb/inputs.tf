@@ -36,3 +36,9 @@ variable "deregistration_delay" {
   description = "Number of seconds to wait before allowing a machine to detach from the target group."
   default     = 300
 }
+
+variable "cluster_tag" {
+  type        = string
+  description = "Tag to be used across all resources to namespace clusters."
+  default     = "default"
+}

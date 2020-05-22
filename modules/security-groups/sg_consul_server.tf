@@ -2,6 +2,10 @@ resource "aws_security_group" "consul_server" {
   name        = "resinstack-consul-server"
   description = "Server RPC Group"
   vpc_id      = var.vpc_id
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_security_group_rule" "consul_server_rpc" {

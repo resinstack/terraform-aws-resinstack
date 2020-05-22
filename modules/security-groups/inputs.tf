@@ -20,3 +20,9 @@ variable "vault_api_client_sgs" {
   description = "List of additional security groups that source vault API traffic"
   default     = []
 }
+
+variable "cluster_tag" {
+  type        = string
+  description = "Tag to be used across all resources to namespace clusters."
+  default     = "default"
+}

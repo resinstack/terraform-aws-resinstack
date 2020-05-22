@@ -2,6 +2,10 @@ resource "aws_security_group" "vault_server" {
   name        = "resinstack-vault-server"
   description = "Vault server group"
   vpc_id      = var.vpc_id
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_security_group_rule" "vault_api_client" {

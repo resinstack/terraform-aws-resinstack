@@ -5,6 +5,10 @@ resource "aws_lb" "alb" {
 
   security_groups = [aws_security_group.alb.id]
   subnets         = var.vpc_subnets
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_lb_listener" "nomad" {
@@ -33,6 +37,10 @@ resource "aws_lb_target_group" "nomad" {
   }
 
   deregistration_delay = var.deregistration_delay
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_lb_listener" "consul" {
@@ -61,6 +69,10 @@ resource "aws_lb_target_group" "consul" {
   }
 
   deregistration_delay = var.deregistration_delay
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_lb_listener" "vault" {
@@ -90,4 +102,8 @@ resource "aws_lb_target_group" "vault" {
   }
 
   deregistration_delay = var.deregistration_delay
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }

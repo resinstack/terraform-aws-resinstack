@@ -1,29 +1,57 @@
 resource "aws_secretsmanager_secret" "consul_gossip_key" {
-  name = "resinstack-consul-gossip-key"
+  name = "resinstack-consul-gossip-key-${var.cluster_tag}"
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_secretsmanager_secret" "consul_agent_token" {
-  name = "resinstack-consul-agent-token"
+  name = "resinstack-consul-agent-token-${var.cluster_tag}"
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_secretsmanager_secret" "nomad_gossip_key" {
-  name = "resinstack-nomad-gossip-key"
+  name = "resinstack-nomad-gossip-key-${var.cluster_tag}"
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_secretsmanager_secret" "nomad_server_consul_token" {
-  name = "resinstack-nomad-server-consul-token"
+  name = "resinstack-nomad-server-consul-token-${var.cluster_tag}"
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_secretsmanager_secret" "nomad_client_consul_token" {
-  name = "resinstack-nomad-client-consul-token"
+  name = "resinstack-nomad-client-consul-token-${var.cluster_tag}"
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_secretsmanager_secret" "vault_consul_token" {
-  name = "resinstack-vault-consul-token"
+  name = "resinstack-vault-consul-token-${var.cluster_tag}"
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_secretsmanager_secret" "nomad_vault_token" {
-  name = "resinstack-nomad-vault-token"
+  name = "resinstack-nomad-vault-token-${var.cluster_tag}"
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 data "aws_iam_policy_document" "client_keys" {
@@ -39,7 +67,7 @@ data "aws_iam_policy_document" "client_keys" {
 }
 
 resource "aws_iam_policy" "client_key_access" {
-  name        = "ResinStackClientKeyAccess"
+  name        = "ResinStackClientKeyAccess-${var.cluster_tag}"
   description = "Allow access to secret keys related to clients"
 
   policy = data.aws_iam_policy_document.client_keys.json
@@ -59,7 +87,7 @@ data "aws_iam_policy_document" "nomad_server_keys" {
 }
 
 resource "aws_iam_policy" "nomad_server_key_access" {
-  name        = "ResinStackNomadServerKeyAccess"
+  name        = "ResinStackNomadServerKeyAccess-${var.cluster_tag}"
   description = "Allow access to secret keys related to Nomad servers"
 
   policy = data.aws_iam_policy_document.nomad_server_keys.json
@@ -76,7 +104,7 @@ data "aws_iam_policy_document" "consul_server_keys" {
 }
 
 resource "aws_iam_policy" "consul_server_key_access" {
-  name        = "ResinStackConsulServerKeyAccess"
+  name        = "ResinStackConsulServerKeyAccess-${var.cluster_tag}"
   description = "Allow access to secret keys related to Consul servers"
 
   policy = data.aws_iam_policy_document.consul_server_keys.json
@@ -94,7 +122,7 @@ data "aws_iam_policy_document" "vault_server_keys" {
 }
 
 resource "aws_iam_policy" "vault_server_key_access" {
-  name        = "ResinStackVaultServerKeyAccess"
+  name        = "ResinStackVaultServerKeyAccess-${var.cluster_tag}"
   description = "Allow access to secret keys related to Vault servers"
 
   policy = data.aws_iam_policy_document.vault_server_keys.json

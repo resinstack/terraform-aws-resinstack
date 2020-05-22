@@ -71,3 +71,9 @@ variable "termination_policies" {
     "OldestInstance",
   ]
 }
+
+variable "cluster_tag" {
+  type        = string
+  description = "Tag to be used across all resources to namespace clusters."
+  default     = "default"
+}

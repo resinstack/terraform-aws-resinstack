@@ -36,7 +36,8 @@ resource "aws_launch_template" "pool" {
     resource_type = "instance"
 
     tags = {
-      "resinstack:consul:autojoin" = "true"
+      "resinstack:consul:autojoin" = var.cluster_tag
+      "resinstack:cluster"         = var.cluster_tag
     }
   }
 }
@@ -46,6 +47,10 @@ resource "aws_placement_group" "pool" {
 
   # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/placement-groups.html
   strategy = "partition"
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_autoscaling_group" "pool" {
@@ -64,4 +69,12 @@ resource "aws_autoscaling_group" "pool" {
     id      = aws_launch_template.pool.id
     version = "$Latest"
   }
+
+  tags = [
+    {
+      key                 = "resinstack:cluster"
+      value               = var.cluster_tag
+      propagate_at_launch = true
+    },
+  ]
 }

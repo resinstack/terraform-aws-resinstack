@@ -2,6 +2,10 @@ resource "aws_security_group" "cluster_worker" {
   name        = "resinstack-cluster-workers"
   description = "General cluster member group with access to control plane."
   vpc_id      = var.vpc_id
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_security_group_rule" "cluster_worker_to_vault" {

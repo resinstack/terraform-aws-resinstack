@@ -17,8 +17,12 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 # Server Roles #
 ################
 resource "aws_iam_role" "resinstack_aio_server" {
-  name               = "resinstack-aio-server"
+  name               = "resinstack-aio-server-${var.cluster_tag}"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "aio_read_tags" {
@@ -47,7 +51,7 @@ resource "aws_iam_role_policy_attachment" "aio_vault_key_access" {
 }
 
 resource "aws_iam_instance_profile" "aio_server_profile" {
-  name = "resinstack-aio-server"
+  name = "resinstack-aio-server-${var.cluster_tag}"
   role = aws_iam_role.resinstack_aio_server.name
 }
 
@@ -56,8 +60,12 @@ resource "aws_iam_instance_profile" "aio_server_profile" {
 # Client Role #
 ###############
 resource "aws_iam_role" "resinstack_client" {
-  name               = "resinstack-client"
+  name               = "resinstack-client-${var.cluster_tag}"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
+
+  tags = {
+    "resinstack:cluster" = var.cluster_tag
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "client_read_tags" {
@@ -71,6 +79,6 @@ resource "aws_iam_role_policy_attachment" "client_key_access" {
 }
 
 resource "aws_iam_instance_profile" "client_profile" {
-  name = "resinstack-client"
+  name = "resinstack-client-${var.cluster_tag}"
   role = aws_iam_role.resinstack_client.name
 }
