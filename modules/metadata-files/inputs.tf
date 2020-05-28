@@ -6,6 +6,7 @@ variable "base_path" {
 variable "vault_key_id" {
   type        = string
   description = "ID of the KMS used for Vault unseal."
+  default     = ""
 }
 
 variable "cluster_tag" {
