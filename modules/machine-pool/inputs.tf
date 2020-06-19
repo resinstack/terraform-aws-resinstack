@@ -3,6 +3,15 @@ variable "pool_name" {
   description = "The name of the machine pool.  This will be used on all resources associated with this pool."
 }
 
+variable "block_devices" {
+  type = map
+  description = "List of maps of block devices"
+  default = {
+    "/dev/xvda" = 2,
+    "/dev/xvdb" = 32
+  }
+}
+
 variable "machine_count_min" {
   type        = number
   description = "Minimum number of machines to run"

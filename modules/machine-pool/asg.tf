@@ -1,19 +1,15 @@
 resource "aws_launch_template" "pool" {
   name = var.pool_name
 
-  block_device_mappings {
-    device_name = "/dev/xvda"
-    ebs {
-      volume_size = 2
-      encrypted   = true
-    }
-  }
-
-  block_device_mappings {
-    device_name = "/dev/xvdb"
-    ebs {
-      volume_size = 32
-      encrypted   = true
+  dynamic "block_device_mappings" {
+    for_each = var.block_devices
+    iterator = block
+    content {
+      device_name = block.key
+      ebs {
+        volume_size = block.value
+        encrypted   = true
+      }
     }
   }
 
