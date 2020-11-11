@@ -4,7 +4,7 @@ variable "pool_name" {
 }
 
 variable "block_devices" {
-  type = map
+  type        = map
   description = "List of maps of block devices"
   default = {
     "/dev/xvda" = 2,
@@ -20,6 +20,7 @@ variable "machine_count_min" {
 variable "machine_count_desired" {
   type        = number
   description = "Desired number of machines to run"
+  default     = null
 }
 
 variable "machine_count_max" {
