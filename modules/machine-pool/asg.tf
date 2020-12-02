@@ -66,11 +66,14 @@ resource "aws_autoscaling_group" "pool" {
     version = "$Latest"
   }
 
-  tags = [
-    {
-      key                 = "resinstack:cluster"
-      value               = var.cluster_tag
-      propagate_at_launch = true
-    },
-  ]
+  tags = flatten([
+    [
+      {
+        key                 = "resinstack:cluster"
+        value               = var.cluster_tag
+        propagate_at_launch = true
+      },
+    ],
+    [for key, value in var.instance_tags : { key = key, value = value, propagate_at_launch = true }],
+  ])
 }

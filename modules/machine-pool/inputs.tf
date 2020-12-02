@@ -87,3 +87,9 @@ variable "cluster_tag" {
   description = "Tag to be used across all resources to namespace clusters."
   default     = "default"
 }
+
+variable "instance_tags" {
+  type        = map(string)
+  description = "Additional tags to be set on instances"
+  default     = {}
+}
