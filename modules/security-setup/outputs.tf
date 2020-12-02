@@ -19,6 +19,16 @@ output "nomad_server_consul_token_name" {
   value = aws_secretsmanager_secret.nomad_server_consul_token.name
 }
 
-output "nomad_vault_token_name" {
+output "nomad_vault_token_name_name" {
   value = aws_secretsmanager_secret.nomad_vault_token.name
+}
+
+output "aio_server_role_name" {
+  value       = aws_iam_role.resinstack_aio_server.name
+  description = "Name of the AIO Server role"
+}
+
+output "client_role_name" {
+  value       = aws_iam_role.resinstack_client.name
+  description = "Name of the Client role"
 }
