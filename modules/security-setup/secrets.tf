@@ -78,6 +78,7 @@ data "aws_iam_policy_document" "nomad_server_keys" {
     actions = ["secretsmanager:GetSecretValue"]
     effect  = "Allow"
     resources = [
+      aws_secretsmanager_secret.consul_agent_token.arn,
       aws_secretsmanager_secret.consul_gossip_key.arn,
       aws_secretsmanager_secret.nomad_gossip_key.arn,
       aws_secretsmanager_secret.nomad_server_consul_token.arn,
