@@ -65,6 +65,12 @@ variable "security_groups" {
   description = "List of security groups to apply to machines."
 }
 
+variable "associate_public_address" {
+  type = bool
+  description = "Associate a public address to the instance, necessary for routing traffic via an IGW."
+  default = false
+}
+
 variable "lb_target_groups" {
   type        = list(string)
   description = "List of target group ARNs for this machine pool."

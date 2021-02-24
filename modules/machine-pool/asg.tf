@@ -13,8 +13,6 @@ resource "aws_launch_template" "pool" {
     }
   }
 
-  vpc_security_group_ids = var.security_groups
-
   image_id = var.ami
   key_name = var.key_name
 
@@ -26,6 +24,11 @@ resource "aws_launch_template" "pool" {
 
   iam_instance_profile {
     name = var.instance_profile
+  }
+
+  network_interfaces {
+    associate_public_ip_address = var.associate_public_address
+    security_groups = var.security_groups
   }
 
   tag_specifications {
