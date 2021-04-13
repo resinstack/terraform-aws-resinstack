@@ -9,3 +9,9 @@ variable "cluster_tag" {
   description = "Tag to be used across all resources to namespace clusters."
   default     = "default"
 }
+
+variable "machine_roles" {
+  type        = map(set(string))
+  description = "Map of role name to role policy identifiers"
+  default     = {}
+}

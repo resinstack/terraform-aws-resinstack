@@ -28,7 +28,7 @@ resource "aws_launch_template" "pool" {
 
   network_interfaces {
     associate_public_ip_address = var.associate_public_address
-    security_groups = var.security_groups
+    security_groups             = var.security_groups
   }
 
   tag_specifications {

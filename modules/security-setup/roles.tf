@@ -1,6 +1,3 @@
-###############
-# Common Data #
-###############
 data "aws_iam_policy_document" "ec2_assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -13,11 +10,10 @@ data "aws_iam_policy_document" "ec2_assume_role" {
   }
 }
 
-################
-# Server Roles #
-################
-resource "aws_iam_role" "resinstack_aio_server" {
-  name               = "resinstack-aio-server-${var.cluster_tag}"
+resource "aws_iam_role" "resinstack_machine_role" {
+  for_each = var.machine_roles
+
+  name               = "resinstack-${each.key}-${var.cluster_tag}"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 
   tags = {
@@ -25,60 +21,51 @@ resource "aws_iam_role" "resinstack_aio_server" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "aio_read_tags" {
-  role       = aws_iam_role.resinstack_aio_server.name
+resource "aws_iam_role_policy_attachment" "read_tags" {
+  for_each = { for i, p in var.machine_roles : i => p if contains(p, "read-tags") }
+
+  role       = aws_iam_role.resinstack_machine_role[each.key].name
   policy_arn = aws_iam_policy.read_tags.arn
 }
 
-resource "aws_iam_role_policy_attachment" "aio_vault_kms_access" {
-  role       = aws_iam_role.resinstack_aio_server.name
+resource "aws_iam_role_policy_attachment" "vault_kms_access" {
+  for_each = { for i, p in var.machine_roles : i => p if contains(p, "vault-kms") }
+
+  role       = aws_iam_role.resinstack_machine_role[each.key].name
   policy_arn = aws_iam_policy.vault_kms_unseal.arn
 }
 
-resource "aws_iam_role_policy_attachment" "aio_nomad_key_access" {
-  role       = aws_iam_role.resinstack_aio_server.name
+resource "aws_iam_role_policy_attachment" "nomad_key_access" {
+  for_each = { for i, p in var.machine_roles : i => p if contains(p, "nomad-keys") }
+
+  role       = aws_iam_role.resinstack_machine_role[each.key].name
   policy_arn = aws_iam_policy.nomad_server_key_access.arn
 }
 
-resource "aws_iam_role_policy_attachment" "aio_consul_key_access" {
-  role       = aws_iam_role.resinstack_aio_server.name
+resource "aws_iam_role_policy_attachment" "consul_key_access" {
+  for_each = { for i, p in var.machine_roles : i => p if contains(p, "consul-keys") }
+
+  role       = aws_iam_role.resinstack_machine_role[each.key].name
   policy_arn = aws_iam_policy.consul_server_key_access.arn
 }
 
-resource "aws_iam_role_policy_attachment" "aio_vault_key_access" {
-  role       = aws_iam_role.resinstack_aio_server.name
+resource "aws_iam_role_policy_attachment" "vault_key_access" {
+  for_each = { for i, p in var.machine_roles : i => p if contains(p, "vault-keys") }
+
+  role       = aws_iam_role.resinstack_machine_role[each.key].name
   policy_arn = aws_iam_policy.vault_server_key_access.arn
 }
 
-resource "aws_iam_instance_profile" "aio_server_profile" {
-  name = "resinstack-aio-server-${var.cluster_tag}"
-  role = aws_iam_role.resinstack_aio_server.name
-}
-
-
-###############
-# Client Role #
-###############
-resource "aws_iam_role" "resinstack_client" {
-  name               = "resinstack-client-${var.cluster_tag}"
-  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
-
-  tags = {
-    "resinstack:cluster" = var.cluster_tag
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "client_read_tags" {
-  role       = aws_iam_role.resinstack_client.name
-  policy_arn = aws_iam_policy.read_tags.arn
-}
-
 resource "aws_iam_role_policy_attachment" "client_key_access" {
-  role       = aws_iam_role.resinstack_client.name
+  for_each = { for i, p in var.machine_roles : i => p if contains(p, "client-keys") }
+
+  role       = aws_iam_role.resinstack_machine_role[each.key].name
   policy_arn = aws_iam_policy.client_key_access.arn
 }
 
-resource "aws_iam_instance_profile" "client_profile" {
-  name = "resinstack-client-${var.cluster_tag}"
-  role = aws_iam_role.resinstack_client.name
+resource "aws_iam_instance_profile" "machine_profile" {
+  for_each = var.machine_roles
+
+  name = "resinstack-${each.key}-${var.cluster_tag}"
+  role = aws_iam_role.resinstack_machine_role[each.key].name
 }

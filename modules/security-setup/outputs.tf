@@ -3,14 +3,6 @@ output "vault_key_id" {
   description = "ID of the Vault KMS key"
 }
 
-output "aio_instance_profile" {
-  value = aws_iam_instance_profile.aio_server_profile.name
-}
-
-output "client_instance_profile" {
-  value = aws_iam_instance_profile.client_profile.name
-}
-
 output "nomad_gossip_key_name" {
   value = aws_secretsmanager_secret.nomad_gossip_key.name
 }
@@ -23,12 +15,12 @@ output "nomad_vault_token_name_name" {
   value = aws_secretsmanager_secret.nomad_vault_token.name
 }
 
-output "aio_server_role_name" {
-  value       = aws_iam_role.resinstack_aio_server.name
-  description = "Name of the AIO Server role"
+output "machine_role" {
+  value       = { for name, role in aws_iam_role.resinstack_machine_role : name => role.name }
+  description = "Map of name to role name for machine roles"
 }
 
-output "client_role_name" {
-  value       = aws_iam_role.resinstack_client.name
-  description = "Name of the Client role"
+output "machine_profile" {
+  value       = { for name, profile in aws_iam_instance_profile.machine_profile : name => profile.name }
+  description = "Map of name to role ARN for machine profiles"
 }

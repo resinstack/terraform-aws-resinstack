@@ -66,9 +66,9 @@ variable "security_groups" {
 }
 
 variable "associate_public_address" {
-  type = bool
+  type        = bool
   description = "Associate a public address to the instance, necessary for routing traffic via an IGW."
-  default = false
+  default     = false
 }
 
 variable "lb_target_groups" {
