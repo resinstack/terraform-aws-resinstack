@@ -18,6 +18,16 @@ resource "aws_security_group_rule" "consul_server_rpc" {
   self              = true
 }
 
+resource "aws_security_group_rule" "consul_server_rpc_agents" {
+  description              = "Accept RPC from agents"
+  type                     = "ingress"
+  from_port                = 8300
+  to_port                  = 8300
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.consul_server.id
+  source_security_group_id = aws_security_group.consul_gossip.id
+}
+
 resource "aws_security_group_rule" "consul_server_rpc_egress" {
   description              = "Accept Server RPC from servers"
   type                     = "egress"
