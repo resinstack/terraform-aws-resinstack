@@ -89,3 +89,30 @@ resource "aws_security_group_rule" "nomad_from_cluster_worker" {
   security_group_id        = aws_security_group.nomad_server.id
   source_security_group_id = aws_security_group.cluster_worker.id
 }
+
+resource "aws_security_group_rule" "nomad_api_vault" {
+  # This one is needed for the vault to be able to connect to nomad
+  # and issue nomad tokens to vault clients.
+
+  description              = "Accept API traffic from Vault Servers"
+  type                     = "ingress"
+  from_port                = 4646
+  to_port                  = 4646
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.nomad_server.id
+  source_security_group_id = aws_security_group.vault_server.id
+}
+
+resource "aws_security_group_rule" "nomad_to_vault" {
+  # This one is needed to allow Nomad to connect to vault and renew
+  # its own tokens and maintain the integrationf for allowing tasks to
+  # use vault secrets.
+
+  description              = "Permit API traffic to vault"
+  type                     = "egress"
+  from_port                = 8200
+  to_port                  = 8200
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.nomad_server.id
+  source_security_group_id = aws_security_group.vault_server.id
+}

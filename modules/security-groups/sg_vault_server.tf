@@ -49,3 +49,33 @@ resource "aws_security_group_rule" "vault_server_from_cluster_worker" {
   security_group_id        = aws_security_group.vault_server.id
   source_security_group_id = aws_security_group.cluster_worker.id
 }
+
+resource "aws_security_group_rule" "vault_server_from_nomad_server" {
+  description              = "Accept API traffic from Nomad servers"
+  type                     = "ingress"
+  from_port                = 8200
+  to_port                  = 8200
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.vault_server.id
+  source_security_group_id = aws_security_group.nomad_server.id
+}
+
+resource "aws_security_group_rule" "vault_to_consul" {
+  description              = "Permit HTTP API to Consul"
+  type                     = "egress"
+  from_port                = 8500
+  to_port                  = 8500
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.vault_server.id
+  source_security_group_id = aws_security_group.consul_server.id
+}
+
+resource "aws_security_group_rule" "vault_to_nomad" {
+  description              = "Permit HTTP API to Nomad"
+  type                     = "egress"
+  from_port                = 4646
+  to_port                  = 4646
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.vault_server.id
+  source_security_group_id = aws_security_group.nomad_server.id
+}

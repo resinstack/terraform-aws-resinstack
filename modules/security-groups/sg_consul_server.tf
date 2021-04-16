@@ -59,3 +59,13 @@ resource "aws_security_group_rule" "consul_from_cluster_worker" {
   security_group_id        = aws_security_group.consul_server.id
   source_security_group_id = aws_security_group.cluster_worker.id
 }
+
+resource "aws_security_group_rule" "consul_api_vault" {
+  description              = "Accept API traffic from Vault Servers"
+  type                     = "ingress"
+  from_port                = 8500
+  to_port                  = 8500
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.consul_server.id
+  source_security_group_id = aws_security_group.vault_server.id
+}
