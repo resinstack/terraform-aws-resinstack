@@ -13,8 +13,9 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 resource "aws_iam_role" "resinstack_machine_role" {
   for_each = var.machine_roles
 
-  name               = "resinstack-${each.key}-${var.cluster_tag}"
-  assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
+  name                 = "resinstack-${each.key}-${var.cluster_tag}"
+  assume_role_policy   = data.aws_iam_policy_document.ec2_assume_role.json
+  max_session_duration = 3600 * 12
 
   tags = {
     "resinstack:cluster" = var.cluster_tag
