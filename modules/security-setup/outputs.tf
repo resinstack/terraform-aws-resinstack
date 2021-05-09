@@ -3,16 +3,9 @@ output "vault_key_id" {
   description = "ID of the Vault KMS key"
 }
 
-output "nomad_gossip_key_name" {
-  value = aws_secretsmanager_secret.nomad_gossip_key.name
-}
-
-output "nomad_server_consul_token_name" {
-  value = aws_secretsmanager_secret.nomad_server_consul_token.name
-}
-
-output "nomad_vault_token_name_name" {
-  value = aws_secretsmanager_secret.nomad_vault_token.name
+output "secretmanager_names" {
+  value       = { for key, value in aws_secretsmanager_secret.hashistack_minimal : key => value.name }
+  description = "AWS-SM secret names for key resinstack secrets"
 }
 
 output "machine_role" {

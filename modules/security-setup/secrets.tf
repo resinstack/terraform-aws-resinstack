@@ -1,57 +1,20 @@
-resource "aws_secretsmanager_secret" "consul_gossip_key" {
-  name = "resinstack-consul-gossip-key-${var.cluster_tag}"
+resource "aws_secretsmanager_secret" "hashistack_minimal" {
+  for_each = toset([
+    "consul-agent-token",
+    "consul-gossip-key",
+    "nomad-client-consul-token",
+    "nomad-gossip-key",
+    "nomad-server-consul-token",
+    "nomad-vault-token",
+    "vault-consul-token",
+  ])
+
+  name = "resinstack-${each.value}-${var.cluster_tag}"
 
   tags = {
     "resinstack:cluster" = var.cluster_tag
   }
-}
 
-resource "aws_secretsmanager_secret" "consul_agent_token" {
-  name = "resinstack-consul-agent-token-${var.cluster_tag}"
-
-  tags = {
-    "resinstack:cluster" = var.cluster_tag
-  }
-}
-
-resource "aws_secretsmanager_secret" "nomad_gossip_key" {
-  name = "resinstack-nomad-gossip-key-${var.cluster_tag}"
-
-  tags = {
-    "resinstack:cluster" = var.cluster_tag
-  }
-}
-
-resource "aws_secretsmanager_secret" "nomad_server_consul_token" {
-  name = "resinstack-nomad-server-consul-token-${var.cluster_tag}"
-
-  tags = {
-    "resinstack:cluster" = var.cluster_tag
-  }
-}
-
-resource "aws_secretsmanager_secret" "nomad_client_consul_token" {
-  name = "resinstack-nomad-client-consul-token-${var.cluster_tag}"
-
-  tags = {
-    "resinstack:cluster" = var.cluster_tag
-  }
-}
-
-resource "aws_secretsmanager_secret" "vault_consul_token" {
-  name = "resinstack-vault-consul-token-${var.cluster_tag}"
-
-  tags = {
-    "resinstack:cluster" = var.cluster_tag
-  }
-}
-
-resource "aws_secretsmanager_secret" "nomad_vault_token" {
-  name = "resinstack-nomad-vault-token-${var.cluster_tag}"
-
-  tags = {
-    "resinstack:cluster" = var.cluster_tag
-  }
 }
 
 data "aws_iam_policy_document" "client_keys" {
@@ -59,9 +22,9 @@ data "aws_iam_policy_document" "client_keys" {
     actions = ["secretsmanager:GetSecretValue"]
     effect  = "Allow"
     resources = [
-      aws_secretsmanager_secret.consul_agent_token.arn,
-      aws_secretsmanager_secret.consul_gossip_key.arn,
-      aws_secretsmanager_secret.nomad_client_consul_token.arn,
+      aws_secretsmanager_secret.hashistack_minimal["consul-agent-token"].arn,
+      aws_secretsmanager_secret.hashistack_minimal["consul-gossip-key"].arn,
+      aws_secretsmanager_secret.hashistack_minimal["nomad-client-consul-token"].arn,
     ]
   }
 }
@@ -78,11 +41,11 @@ data "aws_iam_policy_document" "nomad_server_keys" {
     actions = ["secretsmanager:GetSecretValue"]
     effect  = "Allow"
     resources = [
-      aws_secretsmanager_secret.consul_agent_token.arn,
-      aws_secretsmanager_secret.consul_gossip_key.arn,
-      aws_secretsmanager_secret.nomad_gossip_key.arn,
-      aws_secretsmanager_secret.nomad_server_consul_token.arn,
-      aws_secretsmanager_secret.nomad_vault_token.arn,
+      aws_secretsmanager_secret.hashistack_minimal["consul-agent-token"].arn,
+      aws_secretsmanager_secret.hashistack_minimal["consul-gossip-key"].arn,
+      aws_secretsmanager_secret.hashistack_minimal["nomad-gossip-key"].arn,
+      aws_secretsmanager_secret.hashistack_minimal["nomad-server-consul-token"].arn,
+      aws_secretsmanager_secret.hashistack_minimal["nomad-vault-token"].arn,
     ]
   }
 }
@@ -99,7 +62,7 @@ data "aws_iam_policy_document" "consul_server_keys" {
     actions = ["secretsmanager:GetSecretValue"]
     effect  = "Allow"
     resources = [
-      aws_secretsmanager_secret.consul_gossip_key.arn,
+      aws_secretsmanager_secret.hashistack_minimal["consul-gossip-key"].arn,
     ]
   }
 }
@@ -116,8 +79,8 @@ data "aws_iam_policy_document" "vault_server_keys" {
     actions = ["secretsmanager:GetSecretValue"]
     effect  = "Allow"
     resources = [
-      aws_secretsmanager_secret.consul_gossip_key.arn,
-      aws_secretsmanager_secret.vault_consul_token.arn,
+      aws_secretsmanager_secret.hashistack_minimal["consul-gossip-key"].arn,
+      aws_secretsmanager_secret.hashistack_minimal["vault-consul-token"].arn,
     ]
   }
 }
