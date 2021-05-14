@@ -4,7 +4,7 @@ variable "pool_name" {
 }
 
 variable "block_devices" {
-  type        = map
+  type        = map(any)
   description = "List of maps of block devices"
   default = {
     "/dev/xvda" = 2,
