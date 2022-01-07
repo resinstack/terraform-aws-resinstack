@@ -99,3 +99,9 @@ variable "instance_tags" {
   description = "Additional tags to be set on instances"
   default     = {}
 }
+
+variable "create_scaling_policy" {
+  type        = bool
+  description = "Create an IAM policy to manage this ASG"
+  default     = false
+}
