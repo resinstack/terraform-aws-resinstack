@@ -8,19 +8,12 @@ resource "local_file" "vault_kms_id" {
   directory_permission = "0755"
 }
 
-data "template_file" "emissary_vault" {
-  count = var.vault_server ? 1 : 0
-
-  template = file("${path.module}/tpl/vault.tpl")
-  vars = {
-    vault_consul_token_name = "resinstack-vault-consul-token-${var.cluster_tag}"
-  }
-}
-
 resource "local_file" "emissary_vault" {
   count = var.vault_server ? 1 : 0
 
-  content = data.template_file.emissary_vault[0].rendered
+  content = templatefile("${path.module}/tpl/vault.tpl", {
+    vault_consul_token_name = "resinstack-vault-consul-token-${var.cluster_tag}"
+  })
 
   filename             = "${var.base_path}/emissary/90-gen-vault.tpl"
   file_permission      = "0644"
