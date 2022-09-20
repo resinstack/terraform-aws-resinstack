@@ -2,7 +2,7 @@ module "resinstack_security_setup" {
   source = "../../modules/security-setup"
 
   machine_roles = {
-    aio-server = ["read-tags", "nomad-keys", "consul-keys", "vault-keys", "vault-kms"]
+    aio-server = ["read-tags", "vault-kms"]
   }
 
   cluster_tag         = "resinstack-demo-${random_pet.cluster_tag.id}"

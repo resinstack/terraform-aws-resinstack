@@ -4,6 +4,12 @@ variable "enable_key_rotation" {
   default     = false
 }
 
+variable "enable_awssm" {
+  type        = bool
+  description = "Enable AWS SM Secrets"
+  default     = false
+}
+
 variable "cluster_tag" {
   type        = string
   description = "Tag to be used across all resources to namespace clusters."

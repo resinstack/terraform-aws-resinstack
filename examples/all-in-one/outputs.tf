@@ -12,13 +12,5 @@ resource "local_file" "bootstrap_vars" {
   content = templatefile("${path.module}/vars.sh.tpl",
     {
       alb_addr = aws_lb.lb.dns_name,
-
-      sm-consul-agent-token        = module.resinstack_security_setup.secretmanager_names["consul-agent-token"]
-      sm-consul-gossip-key         = module.resinstack_security_setup.secretmanager_names["consul-gossip-key"]
-      sm-nomad-gossip-key          = module.resinstack_security_setup.secretmanager_names["nomad-gossip-key"]
-      sm-nomad-client-consul-token = module.resinstack_security_setup.secretmanager_names["nomad-client-consul-token"]
-      sm-nomad-server-consul-token = module.resinstack_security_setup.secretmanager_names["nomad-server-consul-token"]
-      sm-nomad-server-vault-token  = module.resinstack_security_setup.secretmanager_names["nomad-vault-token"]
-      sm-vault-consul-token        = module.resinstack_security_setup.secretmanager_names["vault-consul-token"]
   })
 }
